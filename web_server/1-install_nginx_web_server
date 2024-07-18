@@ -2,8 +2,8 @@
 # Script installs Nginx web server and sets up basic configuration
 
 # Update package index and install Nginx
-apt-get update
-apt-get install -y nginx
+sudo apt-get update
+sudo apt-get install -y nginx
 
 # Check if Nginx installation was successful
 if ! [ -x "$(command -v nginx)" ]; then
@@ -12,12 +12,16 @@ if ! [ -x "$(command -v nginx)" ]; then
 fi
 
 # Create a basic HTML file with required content
-echo "Holberton School for the win!" > /usr/share/nginx/html/index.html
+echo "Holberton School for the win!" | sudo tee /var/www/html/index.html
 
-# Create symbolic link for default Nginx configuration
-ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/
+# Check if index.html was created
+if ! [ -f /var/www/html/index.html ]; then
+  echo 'Error: Failed to create index.html.' >&2
+  exit 1
+fi
 
 # Restart Nginx without using systemctl
-service nginx restart
+sudo /etc/init.d/nginx restart
 
 exit 0
+
