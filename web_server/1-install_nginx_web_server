@@ -1,8 +1,23 @@
 #!/usr/bin/env bash
-# Installs nginx server
+# Script installs Nginx web server and sets up basic configuration
 
-sudo apt-get update
-sudo apt-get -y install nginx
-sudo ufw allow 'Nginx HTTP'
-sudo echo "This is Nigel's from Holberton School :)" > /var/www/html/index.html
-sudo service nginx start
+# Update package index and install Nginx
+apt-get update
+apt-get install -y nginx
+
+# Check if Nginx installation was successful
+if ! [ -x "$(command -v nginx)" ]; then
+  echo 'Error: Nginx is not installed.' >&2
+  exit 1
+fi
+
+# Create a basic HTML file with required content
+echo "Holberton School for the win!" > /usr/share/nginx/html/index.html
+
+# Create symbolic link for default Nginx configuration
+ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/
+
+# Restart Nginx without using systemctl
+service nginx restart
+
+exit 0
