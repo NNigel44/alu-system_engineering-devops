@@ -1,27 +1,18 @@
 #!/usr/bin/env bash
-# creating a Not find page of code 404
-apt-get update
-apt-get install -y nginx
+# This script installs Nginx, configures a custom 404 page, and restarts the server.
 
-mkdir /etc/nginx/html
-touch /etc/nginx/html/index.html
-echo "Holberton School" > /etc/nginx/html/index.html
-touch /etc/nginx/html/404.html
-echo "Ceci n'est pas une page" > /etc/nginx/html/404.html
+# Install Nginx
+apt-get update -y
+apt-get install nginx -y
 
-printf %s "server {
-    listen 80;
-    listen [::]:80 default_server;
-    root   /etc/nginx/html;
-    index  index.html index.htm;
-    location /redirect_me {
-        return 301 http://youtube.com/;
-    }
-    error_page 404 /404.html;
-    location /404 {
-      root /etc/nginx/html;
-      internal;
-    }
-}" > /etc/nginx/sites-available/default
+# Create a custom 404 page
+echo "Ceci n'est pas une page" > /var/www/html/404.html
 
+# Update Nginx configuration to use the custom 404 page
+sed -i '/^\tlocation \/ {/ a\\n\t\t# Custom 404 error page\n\t\terror_page 404 /404.html;\n\t\tlocation = /404.html {\n\t\t\tinternal;\n\t\t}' /etc/nginx/sites-available/default
+
+# Restart Nginx
 service nginx restart
+
+exit 0
+
