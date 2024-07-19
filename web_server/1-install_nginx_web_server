@@ -1,16 +1,13 @@
 #!/usr/bin/env bash
-# This script installs Nginx, creates a custom index.html page, and restarts Nginx
+# This script installs and configures Nginx on an Ubuntu server.
 
-# Update package list
+# Update package lists
 apt-get update -y
 
 # Install Nginx
-apt-get install nginx -y
+apt-get install -y nginx
 
-# Remove the default index.html file
-rm -f /var/www/html/index.html
-
-# Create a new index.html file with the required content
+# Set up a basic HTML file to match the required content
 echo "<!DOCTYPE html>
 <html>
 <head>
@@ -24,12 +21,20 @@ echo "<!DOCTYPE html>
 </style>
 </head>
 <body>
-<h1>Holberton School for the win!</h1>
+<h1>Holberton School</h1>
+<p>Holberton School for the win!</p>
 </body>
-</html>" | tee /var/www/html/index.html
+</html>" > /var/www/html/index.html
 
-# Restart Nginx
-service nginx restart
+# Ensure Nginx is listening on port 80
+sed -i 's/listen 80 default_server;/listen 80;/' /etc/nginx/sites-available/default
+
+# Test Nginx configuration
+nginx -t
+
+# Restart Nginx without using systemctl
+service nginx reload
+
 
 
 
