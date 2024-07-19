@@ -1,27 +1,10 @@
 #!/usr/bin/env bash
-# Install and configure Nginx web server
+#Installs nginx server
 
-# Install Nginx
-apt-get update -y
-apt-get install nginx -y
-
-# Create a new HTML file for the root page
-echo "<html><body>Holberton School</body></html>" > /var/www/html/index.html
-
-# Configure Nginx to listen on port 80
-echo "server {
-    listen 80;
-    location / {
-        root /var/www/html;
-        index index.html;
-    }
-}" > /etc/nginx/sites-available/default
-
-# Create a symbolic link to the default configuration
-ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/
-
-# Restart Nginx without using systemctl
-killall nginx
-nginx
+sudo apt-get update
+sudo apt-get -y install nginx
+sudo ufw allow 'Nginx HTTP'
+sudo echo "This is Nigel from Holberton School :)" > /var/www/html/index.html
+sudo service nginx start
 
 
