@@ -1,0 +1,17 @@
+s script fixes Apache to return a page containing 'Hello Holberton'
+
+# Update package lists
+apt-get update
+
+# Install Apache if not already installed
+apt-get install -y apache2
+
+# Create a simple index.html page
+echo "Hello Holberton" > /var/www/html/index.html
+
+# Start Apache
+apachectl start
+
+# Ensure Apache is running
+service apache2 status
+
